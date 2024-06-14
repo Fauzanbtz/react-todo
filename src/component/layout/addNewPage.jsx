@@ -5,13 +5,6 @@ import useLocalStorage from "../hooks/toLocalStorage";
 const AddNew = () => {
   const { value, handleAdd, setValue } = useLocalStorage();
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setValue((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -46,7 +39,7 @@ const AddNew = () => {
                     id="priority"
                     name="priority"
                     value={value.priority}
-                    // onChange={handleChange}
+                    onChange={(e) => setValue((prev) => ({ ...prev, priority: e.target.value }))}
                     className="border border-gray-300 p-2 rounded">
                     <option value="">-</option>
                     <option value="Tidak Penting">Tidak Penting</option>
@@ -64,7 +57,7 @@ const AddNew = () => {
                     id="description"
                     name="description"
                     value={value.description}
-                    // onChange={handleChange}
+                    onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
                     className="border border-gray-300 p-2 rounded h-24"
                     placeholder="A short description of the task - can be omitted"></textarea>
                 </div>
@@ -78,7 +71,7 @@ const AddNew = () => {
                     id="category"
                     name="category"
                     value={value.category}
-                    // onChange={handleChange}
+                    onChange={(e) => setValue((prev) => ({ ...prev, category: e.target.value }))}
                     className="border border-gray-300 p-2 rounded"
                     type="text"
                     placeholder="e.g. household, school, work"
@@ -94,7 +87,7 @@ const AddNew = () => {
                     id="date"
                     name="date"
                     value={value.date}
-                    // onChange={handleChange}
+                    onChange={(e) => setValue((prev) => ({ ...prev, date: e.target.value }))}
                     className="border border-gray-300 p-2 rounded"
                     type="date"
                   />
@@ -107,7 +100,7 @@ const AddNew = () => {
                     id="when"
                     name="when"
                     value={value.when}
-                    // onChange={handleChange}
+                    onChange={(e) => setValue((prev) => ({ ...prev, when: e.target.value }))}
                     className="border border-gray-300 p-2 rounded"
                     type="time"
                   />
@@ -123,6 +116,7 @@ const AddNew = () => {
                 </Link>
                 <button
                   type="submit"
+                  
                   className="px-4 py-2 bg-blue-500 text-white rounded">
                   Save
                 </button>
