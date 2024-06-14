@@ -1,22 +1,36 @@
-// hooks/toLocalStorage.js
 import { useState, useEffect } from "react";
 
-function useLocalStorage(key, defaultValue) {
-  const [value, setValue] = useState(() => {
-    const storedValue = localStorage.getItem(key);
-    try {
-      return storedValue ? JSON.parse(storedValue) : defaultValue;
-    } catch (error) {
-      console.error("Error parsing localStorage value", error);
-      return defaultValue;
-    }
+function useLocalStorage() {
+  const [valueSave, setValuesave] = useState([]);
+
+  const [value, setValue] = useState({
+    task: "",
+    priority: "",
+    description: "",
+    category: "",
+    date: "",
+    when: "",
   });
 
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
+  // const [items, setItems] = useLocalStorage("myData", []);
+  const handleAdd = (item) => {
+    item.preventDefault();
+    const id = valueSave.length + 1;
+    const addId = {id: id, ...value};
+    let addTodos = [...valueSave];
+    addTodos.push(addId);
+    localStorage.setItem("myData", JSON.stringify(addTodos));
+    setValuesave(addTodos);
+    console.log(valueSave);
+    // addTodos.push(valueSave)
+  };
+  return {
+    value,
+    valueSave,
+    handleAdd,
+    setValuesave,
+    setValue,
+  };
 }
 
 export default useLocalStorage;
