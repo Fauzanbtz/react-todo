@@ -8,9 +8,9 @@ const ButtonGroup = () => {
       <Link to="/form">
         <Button>Add a new to-do</Button>
       </Link>
-      <Button>All</Button>
-      <Button>To-do</Button>
-      <Button>Completed</Button>
+      <Link to="/complete">
+        <Button>Completed</Button>
+      </Link>
     </div>
   );
 };

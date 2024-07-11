@@ -1,11 +1,24 @@
 import React from "react";
 import Button from "../button/button";
-import useLocalStorage from "../hooks/toLocalStorage";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-const Table = () => {
-  const { valueSave, value, handleDelete } = useLocalStorage();
+const TableComplete = () => {
+  const [completedTasks, setCompletedTasks] = useState([]);
+  console.log(completedTasks);
 
+  useEffect(() => {
+    const completedData = localStorage.getItem("completed");
+    if (completedData) {
+      setCompletedTasks(JSON.parse(completedData));
+    }
+  }, []);
+
+  const handleDelete = (id) => {
+    const deleteTask = completedTasks.filter((task) => task.id !== id);
+    
+    localStorage.setItem("completed", JSON.stringify(deleteTask));
+    setCompletedTasks(deleteTask);
+  };
   return (
     <div className="flex justify-center bg-[#FFFFFF] m-10 items-start h-96 rounded-xl overflow-scroll">
       <table className="text-center table-auto border-separate border-spacing-x-[10vh]">
@@ -20,7 +33,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {valueSave.map(
+          {completedTasks.map(
             ({ id, task, description, category, when, priority }) => (
               <tr key={id}>
                 <td>{task}</td>
@@ -29,6 +42,7 @@ const Table = () => {
                 <td>{when}</td>
                 <td>{priority}</td>
                 <td>
+                  {" "}
                   <div className="flex justify-center items-center">
                     <Button
                       customStyle="px-5 py-5 m-1 bg-green-500"
@@ -40,15 +54,6 @@ const Table = () => {
                         alt="trash"
                       />
                     </Button>
-                    <Link to={"/edit/" + id }>
-                      <Button customStyle="px-5 py-5 m-1 bg-red-500" href="">
-                        <img
-                          className="w-5"
-                          src="src/assets/icon/edit.png"
-                          alt="edit"
-                        />
-                      </Button>
-                    </Link>
                   </div>
                 </td>
               </tr>
@@ -60,4 +65,4 @@ const Table = () => {
   );
 };
 
-export default Table;
+export default TableComplete;

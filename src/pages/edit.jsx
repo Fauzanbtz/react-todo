@@ -1,9 +1,44 @@
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import useLocalStorage from "../hooks/toLocalStorage";
+import React, { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
-const AddNew = () => {
-  const { value, handleAdd, setValue } = useLocalStorage();
+const Edit = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [value, setValue] = useState({
+    task: "",
+    priority: "",
+    description: "",
+    category: "",
+    date: "",
+    when: "",
+  });
+  const valuesave = JSON.parse(localStorage.getItem("myData"));
+  const item = valuesave.find((todo) => todo.id === parseInt(id));
+
+  useEffect(() => {
+    setValue(item);
+  }, []);
+
+  const handleUpdate = (item) => {
+    item.preventDefault();
+    const saveData = valuesave.map((todo) => {
+      if (todo.id === parseInt(id)) {
+        return {
+          ...todo,
+          task: value.task,
+          priority: value.priority,
+          description: value.description,
+          category: value.category,
+          date: value.date,
+          when: value.when,
+        };
+      }
+      return todo;
+    });
+    localStorage.setItem("myData", JSON.stringify(saveData));
+
+    navigate("/");
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -14,7 +49,7 @@ const AddNew = () => {
         <div className="w-[200vh] flex items-center py-10 justify-center">
           <div className="bg-white p-2 rounded-xl w-4/5">
             <h2 className="text-2xl font-bold mb-4">Add a new to-do:</h2>
-            <form className="space-y-4" onSubmit={handleAdd}>
+            <form className="space-y-4" onClick={(e) => e.preventDefault()}>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label htmlFor="task" className="mb-1">
@@ -22,9 +57,13 @@ const AddNew = () => {
                   </label>
                   <input
                     id="task"
-                    // name="task"
                     value={value.task}
-                    onChange={(e) => setValue((prev) => ({ ...prev, task: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        task: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded"
                     type="text"
                     placeholder="Task name"
@@ -38,7 +77,12 @@ const AddNew = () => {
                     id="priority"
                     name="priority"
                     value={value.priority}
-                    onChange={(e) => setValue((prev) => ({ ...prev, priority: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        priority: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded">
                     <option value="">-</option>
                     <option value="Tidak Penting">Tidak Penting</option>
@@ -56,7 +100,12 @@ const AddNew = () => {
                     id="description"
                     name="description"
                     value={value.description}
-                    onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded h-24"
                     placeholder="A short description of the task - can be omitted"></textarea>
                 </div>
@@ -70,7 +119,12 @@ const AddNew = () => {
                     id="category"
                     name="category"
                     value={value.category}
-                    onChange={(e) => setValue((prev) => ({ ...prev, category: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        category: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded"
                     type="text"
                     placeholder="e.g. household, school, work"
@@ -86,7 +140,12 @@ const AddNew = () => {
                     id="date"
                     name="date"
                     value={value.date}
-                    onChange={(e) => setValue((prev) => ({ ...prev, date: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        date: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded"
                     type="date"
                   />
@@ -99,7 +158,12 @@ const AddNew = () => {
                     id="when"
                     name="when"
                     value={value.when}
-                    onChange={(e) => setValue((prev) => ({ ...prev, when: e.target.value }))}
+                    onChange={(e) =>
+                      setValue((prev) => ({
+                        ...prev,
+                        when: e.target.value,
+                      }))
+                    }
                     className="border border-gray-300 p-2 rounded"
                     type="time"
                   />
@@ -115,7 +179,7 @@ const AddNew = () => {
                 </Link>
                 <button
                   type="submit"
-                  
+                  onClick={handleUpdate}
                   className="px-4 py-2 bg-blue-500 text-white rounded">
                   Save
                 </button>
@@ -128,4 +192,4 @@ const AddNew = () => {
   );
 };
 
-export default AddNew;
+export default Edit;

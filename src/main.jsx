@@ -4,6 +4,8 @@ import Main from "./pages/main";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Form from "./pages/form";
+import Complete from "./pages/complete";
+import Edit from "./pages/edit";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +15,14 @@ const router = createBrowserRouter([
   {
     path: "/form",
     element: <Form />,
+  },
+  {
+    path: "/complete",
+    element: <Complete />,
+  },
+  {
+    path: "/edit/:id",
+    element: <Edit/>,
   },
 ]);
 
